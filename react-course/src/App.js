@@ -22,8 +22,8 @@ function App() {
   }];
   return (
     <>
-      <Survey name="Studies" questions={questions} lastDate={new Date(2022, 11, 30)} answers={0} />
-      {/* <Survey name="Elections 2022" lastDate={new Date(2026, 6, 24)} answers={3000} />
+      <Survey name="Studies" questions={questions} lastDate={new Date(2022, 11, 30)} responders={0} />
+      {/* <Survey name="Elections 2022" lastDate={new Date(2026, 6, 24)} responders={3000} />
       <Survey name="Elections 2022" /> */}
     </>
   );

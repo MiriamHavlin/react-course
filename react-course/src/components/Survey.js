@@ -1,19 +1,53 @@
 import './Survey.css';
-import QuestionTypes from '../enums/QuestionType';
+import SurveyQuestion from './SurveyQuestion';
+import { useState } from 'react';
 
 function Survey(props) {
-    const { name, lastDate, answers } = props;
+    let { name, lastDate, responders } = props;
+    // const [numResponses, setNumResponses] = useState(responders);
+    // const [isFilled, setIsFilled] = useState(false);
+    const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+    const [surveyData, setSurveyData] = useState({
+        numResponses: responders,
+        isFilled: false
+    });
     const inactiveStyle = { color: 'red', fontWeight: 750 }
     const audience = ["students", "teachers", "interested in studies"];
+
+    function SendResponse(e) {
+        alert(surveyData.numResponses);
+        //state - 1
+        // setIsFilled(true)
+        // setNumResponses(prevNumResponses => prevNumResponses + 1);
+        //state - 2
+        // setSurveyData(sd => {
+        //     sd.isFilled = true;
+        //     sd.numResponses++;
+        //     return sd;
+        // })
+        //state - 3
+        const sd = { ...surveyData };
+        sd.isFilled = true;
+        sd.numResponses++;
+        setSurveyData(sd);
+    }
+
+    function tick() {
+        setCurrentTime(new Date().toLocaleTimeString());
+    }
+    setInterval(tick, 1000);
+
     return (
         <div>
             <h1>Survey Component</h1>
+            <h2>{currentTime}</h2>
             <h2 className='nice' >Name of Survey: {name}</h2>
             {lastDate >= new Date() ?
                 <span>active until {lastDate.toDateString()}</span> :
                 <span style={inactiveStyle}>the survey is inactive</span>}
             <br />
-            {answers >= 3000 && <span style={{ backgroundColor: "yellow" }}>Popular Survey!</span>}
+            <span>Responders: {surveyData.numResponses}</span>
+            {responders >= 3000 && <span style={{ backgroundColor: "yellow" }}>Popular Survey!</span>}
             <br />
             <h4>Audience</h4>
             <ul>
@@ -25,21 +59,15 @@ function Survey(props) {
             <ol>
                 {props.questions.map((q, index) =>
                     <li key={index}>
-                        {q.type === QuestionTypes.YesNo && <input type="checkbox" />}
-                        {q.questionText}<br />
-                        {q.type === QuestionTypes.Text ? <input />
-                            : (q.type === QuestionTypes.Choice &&
-                                q.options.map((opt, ind) => <div key={ind + opt}>
-                                    <input id={ind + opt} type="radio" name={index} />
-                                    <label htmlFor={ind + opt}>{opt}</label>
-                                </div>))}
+                        <SurveyQuestion index={index} question={q} />
                     </li>
                 )}
             </ol>
-            <button onClick={(e) => console.log('Thank You!!!')}>Send</button>
-        </div>
+            <button type="button" onClick={SendResponse}>Send</button>
+            {surveyData.isFilled && <p>Thank you for responding to this survey!</p>}
+        </div >
     );
 }
-Survey.defaultProps = { answers: 0, lastDate: new Date() }
+Survey.defaultProps = { responders: 0, lastDate: new Date() }
 
 export default Survey;
