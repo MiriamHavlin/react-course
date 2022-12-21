@@ -3,7 +3,7 @@ import SurveyQuestion from './SurveyQuestion';
 import { useState } from 'react';
 
 function Survey(props) {
-    let { name, lastDate, responders } = props;
+    let { name, lastDate, responders,inactiveColor } = props;
     // const [numResponses, setNumResponses] = useState(responders);
     // const [isFilled, setIsFilled] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
@@ -11,6 +11,7 @@ function Survey(props) {
         numResponses: responders,
         isFilled: false
     });
+  
     const inactiveStyle = { color: 'red', fontWeight: 750 }
     const audience = ["students", "teachers", "interested in studies"];
 
@@ -38,7 +39,7 @@ function Survey(props) {
     setInterval(tick, 1000);
 
     return (
-        <div>
+        <div style={lastDate >= new Date() ?{backgroundColor:inactiveColor}:{}}>
             <h1>Survey Component</h1>
             <h2>{currentTime}</h2>
             <h2 className='nice' >Name of Survey: {name}</h2>
@@ -50,9 +51,9 @@ function Survey(props) {
             {responders >= 3000 && <span style={{ backgroundColor: "yellow" }}>Popular Survey!</span>}
             <br />
             <h4>Audience</h4>
-            <ul>
+            {/* <ul>
                 {audience.map(a => <li key={a}>{a}</li>)}
-            </ul>
+            </ul> */}
             {/* <ol>
                 {props.questions.map((q, index) => <li key={index}>{q}</li>)}
             </ol> */}
@@ -68,6 +69,6 @@ function Survey(props) {
         </div >
     );
 }
-Survey.defaultProps = { responders: 0, lastDate: new Date() }
+Survey.defaultProps = { responders: 0, lastDate: new Date(), questions: [] }
 
 export default Survey;

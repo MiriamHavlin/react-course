@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import CreateSurvey from './components/CreateSurvey';
+import DisplaySettings from './components/DisplaySetting';
 import Survey from './components/Survey';
 import './enums/QuestionType';
 import QuestionTypes from './enums/QuestionType';
@@ -11,9 +12,15 @@ function App() {
   //   "How many hours a week you study?",
   //   "Do you do homework?"
   // ];
-
-  const [surveys, setSurveys] = useState([{ name: "elections 2022" },
-  { name: "studies" }]);
+  const [inactiveColor, setInactiveColor] = useState('#FFFFFF');
+  const [surveys, setSurveys] = useState([{
+    name: "elections 2022",
+    lastDate: new Date(2022, 10, 1)
+  },
+  {
+    name: "studies",
+    lastDate: new Date(2033, 0, 1)
+  }]);
 
   const questions = [{
     code: 1,
@@ -33,12 +40,14 @@ function App() {
   return (
     <>
       <ul>
-        {surveys.map(s => <li>{s.name}</li>)}
+        {surveys.map(s => <Survey name={s.name} lastDate={s.lastDate} inactiveColor={inactiveColor}></Survey>)}
       </ul>
       <CreateSurvey surveys={surveys} setSurveys={setSurveys}></CreateSurvey>
       {/* <Survey name="Studies" questions={questions} lastDate = { new Date(2022, 11, 30) } responders={0} /> */}
       {/* <Survey name="Elections 2022" lastDate={new Date(2026, 6, 24)} responders={3000} />
       <Survey name="Elections 2022" /> */}
+      <br />
+      <DisplaySettings setInactiveColor={setInactiveColor} />
     </>
   );
 }
