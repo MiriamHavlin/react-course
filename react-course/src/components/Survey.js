@@ -1,9 +1,9 @@
 import './Survey.css';
 import SurveyQuestion from './SurveyQuestion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Survey(props) {
-    let { name, lastDate, responders,inactiveColor } = props;
+    let { code, name, lastDate, responders, inactiveColor } = props;
     // const [numResponses, setNumResponses] = useState(responders);
     // const [isFilled, setIsFilled] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
@@ -11,9 +11,10 @@ function Survey(props) {
         numResponses: responders,
         isFilled: false
     });
-  
     const inactiveStyle = { color: 'red', fontWeight: 750 }
     const audience = ["students", "teachers", "interested in studies"];
+
+    const [seconds, setSeconds] = useState(0);
 
     function SendResponse(e) {
         alert(surveyData.numResponses);
@@ -32,15 +33,24 @@ function Survey(props) {
         sd.numResponses++;
         setSurveyData(sd);
     }
-
-    function tick() {
-        setCurrentTime(new Date().toLocaleTimeString());
-    }
-    setInterval(tick, 1000);
+function tick() {
+    console.log(`timer tick in ${code}`);
+    //setCurrentTime(new Date().toLocaleTimeString());
+    setSeconds(seconds => seconds + 1);
+}
+    useEffect(() => {
+        let timerId = setInterval(tick, 1000);
+        return () => clearInterval(timerId);
+    }, []);
+    useEffect(() => {
+        if (seconds >= 10) {
+            document.title = 'you are here already 5 minutes, great!';
+        }
+    }, [seconds])
 
     return (
-        <div style={lastDate >= new Date() ?{backgroundColor:inactiveColor}:{}}>
-            <h1>Survey Component</h1>
+        <div style={lastDate >= new Date() ? { backgroundColor: inactiveColor } : {}}>
+            <h1>Survey Component {code}</h1>
             <h2>{currentTime}</h2>
             <h2 className='nice' >Name of Survey: {name}</h2>
             {lastDate >= new Date() ?
@@ -65,6 +75,9 @@ function Survey(props) {
                 )}
             </ol>
             <button type="button" onClick={SendResponse}>Send</button>
+            <button type="button" onClick={() => {
+                props.setSurveys(surveys => surveys.filter(s => s.code !== code));
+            }}>I don't want to answer this surevy</button>
             {surveyData.isFilled && <p>Thank you for responding to this survey!</p>}
         </div >
     );

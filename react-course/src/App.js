@@ -5,6 +5,7 @@ import DisplaySettings from './components/DisplaySetting';
 import Survey from './components/Survey';
 import './enums/QuestionType';
 import QuestionTypes from './enums/QuestionType';
+import { useEffect } from 'react';
 
 function App() {
   // const questions = [
@@ -13,14 +14,7 @@ function App() {
   //   "Do you do homework?"
   // ];
   const [inactiveColor, setInactiveColor] = useState('#FFFFFF');
-  const [surveys, setSurveys] = useState([{
-    name: "elections 2022",
-    lastDate: new Date(2022, 10, 1)
-  },
-  {
-    name: "studies",
-    lastDate: new Date(2033, 0, 1)
-  }]);
+  const [surveys, setSurveys] = useState([]);
 
   const questions = [{
     code: 1,
@@ -37,10 +31,18 @@ function App() {
     type: QuestionTypes.YesNo
   }];
 
+  useEffect(() => {
+    (async function() {
+      const res = await fetch('http://localhost:3000/api/surveys');
+      const data = await res.json();
+      setSurveys(data);
+    })()
+  }, [])
+
   return (
     <>
       <ul>
-        {surveys.map(s => <Survey name={s.name} lastDate={s.lastDate} inactiveColor={inactiveColor}></Survey>)}
+        {surveys.map((s, ind) => <Survey key={s.code} code={s.code} name={s.name} lastDate={s.lastDate} inactiveColor={inactiveColor} setSurveys={setSurveys}></Survey>)}
       </ul>
       <CreateSurvey surveys={surveys} setSurveys={setSurveys}></CreateSurvey>
       {/* <Survey name="Studies" questions={questions} lastDate = { new Date(2022, 11, 30) } responders={0} /> */}
