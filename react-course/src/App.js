@@ -8,6 +8,8 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Surveys from './components/Surveys';
 import Home from './components/Home';
 import Survey from './components/Survey';
+import ErrorPage from './components/ErrorPage';
+import SurveysList from './components/SurveysList';
 
 function App() {
   const [inactiveColor, setInactiveColor] = useState('#FFFFFF');
@@ -25,29 +27,21 @@ function App() {
     <div className="App">
       <nav>
         <ul>
-          {/* <li><a href="/">Home</a></li>
-    <li><a href="/surveys">Surveys</a></li>
-    <li><a href="/newSurvey">Create Survey</a></li> */}
           <li><Link to="/">Home</Link></li>
           <li><Link to="/surveys">Surveys</Link></li>
-          <li><Link to="/newSurvey">Create Survey</Link></li>
+          <li><Link to="/surveys/new">Create Survey</Link></li>
         </ul>
       </nav>
       <Routes>
+        <Route path="*" element={<ErrorPage />} />
         <Route path="/" element={<Home />} />
-        <Route path="surveys" element={<Surveys surveys={surveys} setSurveys={setSurveys} inactiveColor={inactiveColor} />} />
-        <Route path="surveys/:code" element={<Survey inactiveColor={inactiveColor} setSurveys={setSurveys} />} />
-        <Route path="newSurvey" element={<CreateSurvey surveys={surveys} setSurveys={setSurveys} />} />
+        <Route path="surveys" element={<Surveys />}>
+          <Route path=":code" element={<Survey inactiveColor={inactiveColor} setSurveys={setSurveys} />} />
+          <Route path="new" element={<CreateSurvey surveys={surveys} setSurveys={setSurveys} />} />
+          <Route index element={<SurveysList surveys={surveys} setSurveys={setSurveys} inactiveColor={inactiveColor} />} />
+        </Route>
       </Routes>
     </div>
-    // <>
-    //   <CreateSurvey surveys={surveys} setSurveys={setSurveys}></CreateSurvey>
-    //   {/* <Survey name="Studies" questions={questions} lastDate = { new Date(2022, 11, 30) } responders={0} /> */}
-    //   {/* <Survey name="Elections 2022" lastDate={new Date(2026, 6, 24)} responders={3000} />
-    //   <Survey name="Elections 2022" /> */}
-    //   <br />
-    //   <DisplaySettings setInactiveColor={setInactiveColor} />
-    // </>
   );
 }
 

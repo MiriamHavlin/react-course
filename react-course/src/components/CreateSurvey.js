@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function CreateSurvey(props) {
     const { setSurveys } = props;
+    const navigate = useNavigate();
     let surveyName = '';
     const [newSurvey, setNewSurvey] = useState(null);
     async function postData() {
@@ -14,6 +16,7 @@ function CreateSurvey(props) {
         const data = await res.json();
         if (data.code > 0) {
             setSurveys(prevSurveys => prevSurveys.concat(data));
+            navigate('/surveys');
         }
     }
     useEffect(() => {

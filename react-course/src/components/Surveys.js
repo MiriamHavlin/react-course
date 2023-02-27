@@ -1,16 +1,11 @@
 
-import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 function Surveys(props) {
     return (
         <>
-            <h1>Available Surveys</h1>
-            <ul>
-                {props.surveys.map(s => <li key={s.code}>
-                    <Link to={`/surveys/${s.code}`}>{s.name}</Link>
-                    <br />
-                </li>)}
-            </ul>
+            <h1>Surveys Area</h1>
+            <Outlet />
         </>
     )
 }
