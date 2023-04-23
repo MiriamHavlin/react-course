@@ -10,6 +10,7 @@ import Home from './components/Home';
 import Survey from './components/Survey';
 import ErrorPage from './components/ErrorPage';
 import SurveysList from './components/SurveysList';
+import StatusBar from './components/StatusBar';
 
 function App() {
   const [inactiveColor, setInactiveColor] = useState('#FFFFFF');
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <div className="App">
+      <StatusBar />
       <nav>
         <ul>
           <li><Link to="/">Home</Link></li>
