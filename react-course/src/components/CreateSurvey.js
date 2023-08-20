@@ -9,8 +9,10 @@ function CreateSurvey(props) {
     const isOnline = useOnlineStatus();
     let surveyName = '';
     const [newSurvey, setNewSurvey] = useState(null);
+    const port = process.env.REACT_APP_API_SERVER_PORT;
+    const url = process.env.REACT_APP_API_SERVER_URL;
     async function postData() {
-        const res = await fetch('http://localhost:3000/api/surveys', {
+        const res = await fetch(`${url}:${port}/api/surveys`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newSurvey)

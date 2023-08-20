@@ -4,12 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { Auth0ProviderWithNavigate } from './components/Auth0Components/Auth0ProviderWithNavigate';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <App />
+   <Auth0ProviderWithNavigate>
+     <App />
+   </Auth0ProviderWithNavigate>
   </BrowserRouter>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function

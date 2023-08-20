@@ -2,7 +2,10 @@ const express = require('express')
 const surveys = require('./surveys').surveys;
 const cors = require('cors');
 const app = express()
-const port = 3000
+
+//package to get data from env file
+require('dotenv').config();
+const port = process.env.API_SERVER_PORT;
 
 app.use(cors());
 app.use(express.json());

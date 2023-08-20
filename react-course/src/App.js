@@ -11,14 +11,17 @@ import Survey from './components/Survey';
 import ErrorPage from './components/ErrorPage';
 import SurveysList from './components/SurveysList';
 import StatusBar from './components/StatusBar';
+import LogInOrSignupButton from './components/Auth0Components/Buttons/LogInOrSignupButton'
+import LogoutButton from './components/Auth0Components/Buttons/LogoutButton'
 
 function App() {
   const [inactiveColor, setInactiveColor] = useState('#FFFFFF');
   const [surveys, setSurveys] = useState([]);
-
+  const port = process.env.REACT_APP_API_SERVER_PORT;
+  const url = process.env.REACT_APP_API_SERVER_URL;
   useEffect(() => {
     (async function () {
-      const res = await fetch('http://localhost:3000/api/surveys');
+      const res = await fetch(`${url}:${port}/api/surveys`);
       const data = await res.json();
       setSurveys(data);
     })()
@@ -32,6 +35,12 @@ function App() {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/surveys">Surveys</Link></li>
           <li><Link to="/surveys/new">Create Survey</Link></li>
+          <LogInOrSignupButton btnText='Log In' />
+          <br />
+          <LogInOrSignupButton btnText='Sigh Up' screenHint='signup' />
+          <br />
+          <LogoutButton />
+
         </ul>
       </nav>
       <Routes>
